@@ -15,7 +15,6 @@ describe('api test suite', () => {
     })
     test('GET - /api/categories returns 200', () => {
         return request(app).get('/api/categories').expect(200).then(({body}) => {
-            console.log(body)
             expect(body.category.length).toBe(4)
             expect(body.category).toBeArray();
             body.category.forEach(category => {
@@ -23,6 +22,14 @@ describe('api test suite', () => {
                 expect(typeof category.description).toBe('string')
 
             })
+        })
+    })
+})
+
+describe('404 error test', () => {
+    test('GET - /api/nonsense returns 404 error msg ', () => {
+        return request(app).get('/api/treasurdsfeame').expect(404).then((res) => {
+            expect(res.body.msg).toBe('Not Found.')
         })
     })
 })
