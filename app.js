@@ -4,7 +4,7 @@ const app = express();
 
 
 app.get('/api', (request, response) => response.send({msg: 'all ok'}));
-app.use('/api/categories', getCategories)
+app.get('/api/categories', getCategories)
 
 //Error-handling
 app.all('*', ( req, res) => {
