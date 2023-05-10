@@ -1,10 +1,11 @@
 const express = require('express');
 const { getCategories } = require('./controllers/categories.controllers');
+const { getInstruction } = require('./controllers/instruction.controllers');
 const app = express();
 
-
-app.get('/api', (request, response) => response.send({msg: 'all ok'}));
+app.get('/api', getInstruction);
 app.get('/api/categories', getCategories)
+
 
 //Error-handling
 app.all('*', ( req, res) => {

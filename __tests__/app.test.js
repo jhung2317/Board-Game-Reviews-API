@@ -7,10 +7,14 @@ const testData = require('../db/data/test-data');
 beforeEach(() => seed(testData));
 afterAll(() => db.end());
 
+//test is amended for ticket 3.5
 describe('api test suite', () => {
-    test('GET - /api returns 200', () => {
+    test('GET - /api returns 200 with an JSON Object of all endpoints information', () => {
         return request(app).get('/api').expect(200).then((response) => {
-            expect(response.body).toEqual({msg: 'all ok'})
+            console.log(response.body)
+            expect(response.body).toBeInstanceOf(Object);
+            expect(response.body.Instruction.hasOwnProperty("GET /api")).toBe(true)
+            expect(Object.entries(response.body.Instruction).length).toBe(3)
         })
     })
     test('GET - /api/categories returns 200', () => {
