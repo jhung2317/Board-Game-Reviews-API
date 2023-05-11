@@ -7,7 +7,9 @@ const app = express();
 app.get('/api', getInstruction);
 app.get('/api/categories', getCategories)
 app.get('/api/reviews/:review_id', getReview)
+
 app.get('/api/reviews', getAllReviews)
+
 
 //Error-handling
 app.all('*', (req, res) => {

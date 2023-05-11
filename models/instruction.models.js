@@ -7,3 +7,4 @@ const fetchInstructions = () => {
 }
 
 module.exports = {fetchInstructions}
+

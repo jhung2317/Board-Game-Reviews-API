@@ -19,6 +19,7 @@ describe('api test suite', () => {
     test('GET - /api/categories returns 200', () => {
         return request(app).get('/api/categories').expect(200).then(({body}) => {
             expect(body.category.length).toBe(4)
+
             expect(body.category).toBeInstanceOf(Array);
             body.category.forEach(category => {
                 expect(typeof category.slug).toBe('string')
@@ -30,6 +31,7 @@ describe('api test suite', () => {
 })
 
 describe('404 error test', () => {
+
   test('GET - /api/nonsense returns 404 error msg ', () => {
       return request(app).get('/api/huhgfeame').expect(404).then((res) => {
           expect(res.body.msg).toBe('Bad Request.')
@@ -94,4 +96,5 @@ describe('GET /api/reviews test suite', () => {
   
 
   
+
 })
