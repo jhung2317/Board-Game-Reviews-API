@@ -11,7 +11,6 @@ afterAll(() => db.end());
 describe('api test suite', () => {
     test('GET - /api returns 200 with an JSON Object of all endpoints information', () => {
         return request(app).get('/api').expect(200).then((response) => {
-            console.log(response.body)
             expect(response.body).toBeInstanceOf(Object);
             expect(response.body.Instruction.hasOwnProperty("GET /api")).toBe(true)
             expect(Object.entries(response.body.Instruction).length).toBe(3)
@@ -32,8 +31,31 @@ describe('api test suite', () => {
 
 describe('404 error test', () => {
     test('GET - /api/nonsense returns 404 error msg ', () => {
-        return request(app).get('/api/treasurdsfeame').expect(404).then((res) => {
-            expect(res.body.msg).toBe('Not Found.')
+        return request(app).get('/api/huhgfeame').expect(404).then((res) => {
+            expect(res.body.msg).toBe('Bad Request.')
         })
+    })
+})
+
+describe('GET /api/reviews/:review_id test suite', () => {
+    test('GET - status 200 returns a correct review object with 9 properties', () => {
+        return request(app).get('/api/reviews/2').expect(200).then(({body}) => {
+            body.review.forEach(item => {
+                expect( item.review_id ).toBe(2)
+                expect(typeof item.title).toBe('string')
+                expect(typeof item.review_body).toBe('string')
+                expect(typeof item.review_img_url).toBe('string')
+                expect(typeof item.votes).toBe('number')
+                expect(typeof item.category).toBe('string')
+                expect(typeof item.owner).toBe('string')
+                expect(typeof item.created_at).toBe('string')
+            })
+        })
+    })
+    test('GET - status 404 - invalid review id will respond with not found.', () => {
+        return request(app).get('/api/reviews/9999').expect(404).then(({body}) => {
+                console.log(body)
+                expect(body.msg).toBe('Review Not Found.')
+            })
     })
 })
