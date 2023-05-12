@@ -88,7 +88,6 @@ describe('GET /api/reviews test suite', () => {
       .get('/api/reviews')
       .expect(200)
       .then(({body}) => {
-        console.log(body.Review);
         const {reviews} = body;
           expect( body.Review ).toBeSortedBy('created_at', { descending: true })
       })
@@ -98,7 +97,6 @@ describe('GET /api/reviews test suite', () => {
 describe('GET /api/reviews/:review_id/comments test suite', () => {
   test('GET - status 200 returns a correct comment object with 6 properties', () => {
       return request(app).get('/api/reviews/2/comments').expect(200).then(({body}) => {
-        console.log(body);
         body.comment.forEach(item => {
           expect(typeof item.comment_id).toBe('number')
           expect(typeof item.review_id).toBe('number')
