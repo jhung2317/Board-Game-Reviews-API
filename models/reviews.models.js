@@ -13,7 +13,6 @@ exports.selectReviewById = (id) => {
             return result.rows;
         }
     });
-
 }
 
 exports.fetchAllReviews= () => {

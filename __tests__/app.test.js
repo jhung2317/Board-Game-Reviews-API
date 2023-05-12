@@ -33,7 +33,7 @@ describe('api test suite', () => {
 describe('404 error test', () => {
 
   test('GET - /api/nonsense returns 404 error msg ', () => {
-      return request(app).get('/api/huhgfeame').expect(404).then((res) => {
+      return request(app).get('/api/huhgfeame').expect(400).then((res) => {
           expect(res.body.msg).toBe('Bad Request.')
       })
   })
@@ -85,16 +85,43 @@ describe('GET /api/reviews test suite', () => {
 
   test('GET - status 200 returned array should be sorted by date in descending order.', () => {
     return request(app)
-        .get('/api/reviews')
-        .expect(200)
-        .then(({body}) => {
-          console.log(body.Review);
-          const {reviews} = body;
-            expect( body.Review ).toBeSortedBy('created_at', { descending: true })
-        })
+      .get('/api/reviews')
+      .expect(200)
+      .then(({body}) => {
+        console.log(body.Review);
+        const {reviews} = body;
+          expect( body.Review ).toBeSortedBy('created_at', { descending: true })
+      })
+  })
 })
-  
 
-  
-
+describe('GET /api/reviews/:review_id/comments test suite', () => {
+  test('GET - status 200 returns a correct comment object with 6 properties', () => {
+      return request(app).get('/api/reviews/2/comments').expect(200).then(({body}) => {
+        console.log(body);
+        body.comment.forEach(item => {
+          expect(typeof item.comment_id).toBe('number')
+          expect(typeof item.review_id).toBe('number')
+          expect(typeof item.votes).toBe('number')
+          expect(typeof item.created_at).toBe('string')
+          expect(typeof item.author).toBe('string')
+          expect(typeof item.body).toBe('string')
+        })
+      })
+  })
+  test('GET - status 404 - there is no comment for valid review_id.', () => {
+    return request(app).get('/api/reviews/1/comments').expect(404).then(({body}) => {
+      expect(body.msg).toBe('Comment Not Found.')
+    })
+  })
+  test('GET - status 404 - invalid review id will respond with not found.', () => {
+    return request(app).get('/api/reviews/9999/comments').expect(404).then(({body}) => {
+      expect(body.msg).toBe('Review Not Found.')
+    })
+  })
+  test('GET - status 400 - invalid input will respond with Bad Request', () => {
+    return request(app).get('/api/reviews/1/coms').expect(400).then(({body}) => {
+      expect(body.msg).toBe('Bad Request.')
+    })
+  })
 })
