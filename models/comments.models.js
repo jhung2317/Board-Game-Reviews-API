@@ -10,7 +10,7 @@ exports.fetchCommentById = (review_id) => {
       ORDER BY created_at DESC;
       `, [review_id]).then((result) => {
         if (result.rows.length === 0 && review_id) {
-            return Promise.reject({status: 404, msg: 'Comment Not Found.'});
+            return Promise.reject({status: 200, msg: `There is no comment for review #${review_id}.`});
         } else if (result.rows.length === 0 ){
           return Promise.reject({status: 404, msg: 'Review Not Found.'});
         } else {
