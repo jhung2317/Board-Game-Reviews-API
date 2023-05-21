@@ -216,20 +216,11 @@ describe('PATCH /api/reviews/:review_id test suite', () => {
       expect(updatedReview.votes).toEqual(0)
     })
   })
-  test("returns 404 when passed comment id does not exist", () => {
-    return request(app).delete("/api/comments/99999").expect(404)
-      .then(({body}) => {
-        const {msg} = body;
-        expect(msg).toBe('No comment found with id: 99999')
-      });
+  test('GET - status 404 - invalid review id will respond with not found.', () => {
+    return request(app).get('/api/reviews/9999').expect(404).then(({body}) => {
+            expect(body.msg).toBe('Review Not Found.')
+        })
   });
-  test('DELETE - status 400 - invalid comment_id', () => {
-    return request(app).delete('/api/comments/non-sense').expect(400)
-      .then(({body}) => {
-        const {msg} = body;
-        expect(msg).toBe('Bad Request.')
-      })
-  })
 })
 
 
