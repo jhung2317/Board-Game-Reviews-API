@@ -38,7 +38,7 @@ describe('404 error test', () => {
       })
   })
 })
-
+//test is amended for ticket 4
 describe('GET /api/reviews/:review_id test suite', () => {
   test('GET - status 200 returns a correct review object with 9 properties', () => {
       return request(app).get('/api/reviews/2').expect(200).then(({body}) => {
@@ -61,6 +61,8 @@ describe('GET /api/reviews/:review_id test suite', () => {
         })
   })
 })
+
+//test is amended for ticket 5
 
 describe('GET /api/reviews test suite', () => {
   test('GET - status 200 returns a correct review object with 9 properties', () => {
@@ -93,7 +95,7 @@ describe('GET /api/reviews test suite', () => {
       })
   })
 })
-
+//test is amended for ticket 6
 describe('GET /api/reviews/:review_id/comments test suite', () => {
   test('GET - status 200 returns a correct comment object with 6 properties', () => {
       return request(app).get('/api/reviews/2/comments').expect(200).then(({body}) => {
@@ -121,5 +123,136 @@ describe('GET /api/reviews/:review_id/comments test suite', () => {
     return request(app).get('/api/reviews/nonsense/comments').expect(400).then(({body}) => {
       expect(body.msg).toBe('Bad Request.')
     })
+  })
+})
+
+//test is amended for ticket 7
+
+describe('Post /api/reviews/:review_id/comments test suite', () => {
+  test('Post status 201 returns a posted comment object', () => {
+    return request(app)
+      .post('/api/reviews/2/comments')
+      .send({ username: "mallionaire", body: "Good, very good!" })
+      .expect(201)
+      .then(({body}) => {
+        console.log(body.postedComments)
+        const {postedComments} = body;
+        expect(postedComments.author).toBe('mallionaire');
+        expect(postedComments.body).toBe("Good, very good!")
+    })
+  })
+  test('POST - status 404 - the review_id is not existing.', () => {
+    return request(app)
+        .post('/api/reviews/99999/comments')
+        .send({ username: "mallionaire", body: "Good, very good!" })
+        .expect(404)
+        .then(({body}) => {
+            const {msg} = body;
+            expect(msg).toBe('Review Not Found.')
+    })
+  })
+
+  test('POST - status 400 - the review_id is invalid (non-numeric).', () => {
+    return request(app)
+        .post('/api/reviews/non-sense/comments')
+        .send({ username: "mallionaire", body: "Good, very good!" })
+        .expect(400)
+        .then(({body}) => {
+            const {msg} = body;
+            expect(msg).toBe('Bad Request.')
+    })
+  })
+})
+
+//test is amended for ticket 8
+describe('PATCH /api/reviews/:review_id test suite', () => {
+  test('returns 200 OK with updated review', () => {
+    const testReview = { inc_votes : 0 };
+    return request(app).patch('/api/reviews/2').send(testReview).expect(200)
+    .then(({body}) => {
+      const updatedReview = body.review[0];
+
+      expect(updatedReview.review_id).toEqual(2)
+      expect(typeof updatedReview.title).toBe('string')
+      expect(typeof updatedReview.category).toBe('string')
+      expect(typeof updatedReview.designer).toBe('string')
+      expect(typeof updatedReview.owner).toBe('string')
+      expect(typeof updatedReview.review_body).toBe('string')
+      expect(typeof updatedReview.review_img_url).toBe('string')
+      expect(typeof updatedReview.created_at).toBe('string')
+      expect(updatedReview.votes).toEqual(5)
+      
+    })
+  })
+  test('the votes of the updated review are changed correctly', () => {
+    const testReview = { inc_votes : 10 };
+    return request(app).patch('/api/reviews/2').send(testReview).expect(200)
+    .then(({body}) => {
+      const updatedReview = body.review[0];
+      expect(updatedReview.review_id).toEqual(2)
+      expect(typeof updatedReview.title).toBe('string')
+      expect(typeof updatedReview.category).toBe('string')
+      expect(typeof updatedReview.designer).toBe('string')
+      expect(typeof updatedReview.owner).toBe('string')
+      expect(typeof updatedReview.review_body).toBe('string')
+      expect(typeof updatedReview.review_img_url).toBe('string')
+      expect(typeof updatedReview.created_at).toBe('string')
+      expect(updatedReview.votes).toEqual(15)
+    })
+  })
+  test('the votes of the updated review are changed correctly', () => {
+    const testReview = { inc_votes : -10 };
+    return request(app).patch('/api/reviews/2').send(testReview).expect(200)
+    .then(({body}) => {
+      const updatedReview = body.review[0];
+      expect(updatedReview.review_id).toEqual(2)
+      expect(typeof updatedReview.title).toBe('string')
+      expect(typeof updatedReview.category).toBe('string')
+      expect(typeof updatedReview.designer).toBe('string')
+      expect(typeof updatedReview.owner).toBe('string')
+      expect(typeof updatedReview.review_body).toBe('string')
+      expect(typeof updatedReview.review_img_url).toBe('string')
+      expect(typeof updatedReview.created_at).toBe('string')
+      expect(updatedReview.votes).toEqual(0)
+    })
+  })
+  test("returns 404 when passed comment id does not exist", () => {
+    return request(app).delete("/api/comments/99999").expect(404)
+      .then(({body}) => {
+        const {msg} = body;
+        expect(msg).toBe('No comment found with id: 99999')
+      });
+  });
+  test('DELETE - status 400 - invalid comment_id', () => {
+    return request(app).delete('/api/comments/non-sense').expect(400)
+      .then(({body}) => {
+        const {msg} = body;
+        expect(msg).toBe('Bad Request.')
+      })
+  })
+})
+
+
+//test is amended for ticket 9
+describe('DELETE /api/comments/:comment_id test suite', () => {
+  test('returns 204 no content status', () => {
+      return request(app).delete('/api/comments/3').expect(204)
+        .then(({body}) => {
+          expect(body).toEqual({}) 
+        })
+  })
+  test("returns 404 when passed comment id does not exist", () => {
+    return request(app).delete("/api/comments/99999").expect(404)
+      .then(({body}) => {
+        const {msg} = body;
+        expect(msg).toBe('No comment found with id: 99999')
+      });
+  });
+  test('DELETE - status 400 - invalid comment_id', () => {
+    return request(app).delete('/api/comments/non-sense').expect(400)
+      .then(({body}) => {
+        const {msg} = body;
+        expect(msg).toBe('Bad Request.')
+      })
   })
 })
