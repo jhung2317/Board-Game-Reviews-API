@@ -4,7 +4,7 @@ const {
   convertTimestampToDate,
   createRef,
   formatComments
-} = require('./utils');
+} = require('../utils/utils');
 
 const seed = ({ categoryData, commentData, reviewData, userData }) => {
   return db

@@ -3,7 +3,7 @@ const {
 	createRef,
 	formatComments,
   CheckReviewExist,
-} = require("../db/seeds/utils");
+} = require("../db/utils/utils");
 const request = require('supertest');
 const app = require('../app.js');
 const db = require('../db/connection')

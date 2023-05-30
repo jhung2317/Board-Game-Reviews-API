@@ -3,6 +3,7 @@ const { getCategories } = require('./controllers/categories.controllers');
 const { getCommentsById } = require('./controllers/comments.controllers');
 const { getInstruction } = require('./controllers/instruction.controllers');
 const { getReview, getAllReviews } = require('./controllers/reviews.controllers');
+const { handleServerErrors, handleCustomErrors, handlePsqlErrors } = require('./db/errors/errors');
 const app = express();
 
 app.get('/api', getInstruction);
@@ -17,19 +18,8 @@ app.all('*', (req, res) => {
     res.status(400).send({ msg: 'Bad Request.' });
 });
 
-// app.use((err, req, res, next) => {
-//   if (err.code === '22P02') {
-//     res.status(400).send({ msg: 'Invalid input' });
-//   } else next(err);
-// });
-
-app.use((err, req, res, next) => {
-  if (err.status && err.msg) {
-    res.status(err.status).send({msg: err.msg});
-  } else {
-    res.status(500).send({ msg: 'Internal Server Error' });
-
-  }
-});
+app.use(handleCustomErrors);
+app.use(handlePsqlErrors);
+app.use(handleServerErrors);
 
 module.exports = app;

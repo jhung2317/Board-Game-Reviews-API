@@ -1,5 +1,5 @@
 const db = require("../db/connection");
-const { CheckReviewExist } = require("../db/seeds/utils");
+const { CheckReviewExist } = require("../db/utils/utils");
 
 exports.fetchCommentById = (review_id) => {
   return CheckReviewExist(review_id).then(() => {
