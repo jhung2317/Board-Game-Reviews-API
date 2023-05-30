@@ -2,7 +2,16 @@ const {
 	convertTimestampToDate,
 	createRef,
 	formatComments,
+  CheckReviewExist,
 } = require("../db/seeds/utils");
+const request = require('supertest');
+const app = require('../app.js');
+const db = require('../db/connection')
+const seed = require('../db/seeds/seed');
+const testData = require('../db/data/test-data');
+
+beforeEach(() => seed(testData));
+afterAll(() => db.end());
 
 describe("convertTimestampToDate", () => {
 	test("returns a new object", () => {
@@ -102,3 +111,11 @@ describe("formatComments", () => {
 		expect(formattedComments[0].created_at).toEqual(new Date(timestamp));
 	});
 });
+
+describe('', () => {
+  test('returns 404 "review not found", if passed review_id not exist', () => {
+    return request(app).get('/api/reviews/9999/comments').expect(404).then(({body}) => {
+      expect(body.msg).toBe('Review Not Found.')
+    })
+  })
+})
