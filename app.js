@@ -3,8 +3,10 @@ const { getCategories } = require('./controllers/categories.controllers');
 const { getCommentsById, postComments, deleteComment } = require('./controllers/comments.controllers');
 const { getInstruction } = require('./controllers/instruction.controllers');
 const { getReview, getAllReviews, patchReviewVote } = require('./controllers/reviews.controllers');
+const cors = require('cors');
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 app.get('/api', getInstruction);
 app.get('/api/categories', getCategories)
