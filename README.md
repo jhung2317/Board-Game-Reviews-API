@@ -1,23 +1,68 @@
-# My Northcoders Games API
-## Purpose
-This API is a back-end service for the purpose of accessing application data programmatically so as to provide information to the front-end architecture.
+# Board Games Reviews API
 
-## Toolkit
-This API is built in Node.JS environment, using PostgreSQL as database and node-postgres as connection, tested with Jest.
+Link to hosted site [here](https://ncgames-tsyc.onrender.com).
 
-MVC architectural pattern is implemented.
+## Summary
 
-## Set up environment
-For security, the environment files are not included in this repository. In order to run this API, please follow the instructions as below:
+This project is a API for a game reviews. It is built with Node.js and Express, using a PostgreSQL database to store and retrieve data. The API allows users to create, read, update and delete data for various endpoints, including users, reviews, comments and categories.
 
-## Run npm install
-create '.env.test' and '.env.development' on the root directory.
-update the aforesaid env files with reference of '.env.example'.
-the database_name can be found inside ./db/setup.sql.
-List of available endpoints for the API
-To get the list of available endpoints, please use GET to /api. The response will ccontain the following information:
+## Clone and Setup Instructions
 
-## Description of the endpoint
-acceptable query options
-format of the request body for POST/PUT/PATCH
-examples of responses
+1. Install Node.js and PostgreSQL on your machine, if they are not already installed.
+2. Clone the repository to your local machine using the following command:
+
+```
+git clone [URL]
+```
+
+3. Install dependencies by running the following command in the project's root folder:
+
+```
+npm install
+```
+
+4. Create the necessary databases by running the following command:
+
+```
+npm run setup-dbs
+```
+
+5. Seed the development database with data by running the following command:
+
+```
+npm run seed
+```
+
+6. Create two .env files in the project's root folder: **.env.test** and **.env.development.**
+7. Add **PGDATABASE=<database_name_here>** to each .env file, as follows:
+
+   - .env.test: **PGDATABASE=nc_games_test**
+   - .env.development: **PGDATABASE=nc_games**
+
+   **Note: Ensure that both .env files are .gitignored.**
+
+## Starting the server
+
+1. Start the server by running the following command:
+
+```
+npm start
+```
+
+## Running Tests
+
+To run tests for this project, follow these steps:
+
+1. Ensure that you have followed the setup instructions above, including creating the .env.test file.
+
+2. Run the following command to execute the tests:
+
+```
+npm test
+```
+
+## Minimum Versions
+
+The following minimum versions are required to run the project successfully.
+
+- Node.js >=6.9.0
