@@ -1,6 +1,6 @@
 # Board Games Reviews API
 
-Link to hosted site [here](https://ncgames-tsyc.onrender.com).
+Link to hosted site [here](https://ncgames-tsyc.onrender.com/api/).
 
 ## Summary
 
